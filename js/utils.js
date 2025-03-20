@@ -60,7 +60,7 @@ var shortcuts = {
     // hidden ancestor element.
     ':not([aria-hidden="true"] a)',
 
-  resultContainerQuerySelector: 'div.gs_r, div.g, li, td',
+  resultContainerQuerySelector: 'div.gs_r, div.g, li, td, div [jscontroller]',
   navigationContainerQuerySelector: 'div[role="navigation"] table',
   navigationLinksAndSuggestedSearchesQuerySelector: 'div[role="navigation"] table a, #botstuff a',
 
@@ -73,12 +73,17 @@ var shortcuts = {
   },
 
   isElementVisible: function(element) {
+    // pretty debug:
+    console.log("element.offsetWidth", element.offsetWidth)
+    console.log("element.offsetHeight", element.offsetHeight)
+    console.log("window.getComputedStyle(element, null).getPropertyValue('visibility')", window.getComputedStyle(element, null).getPropertyValue('visibility'))
+
     return element && (element.offsetWidth > 0 || element.offsetHeight > 0) && window.getComputedStyle(element, null).getPropertyValue('visibility') != 'hidden';
   },
 
   getVisibleResults: function() {
     var containers = [];
-    return [
+    let ret = [
       // Main items
       ...Array.from(document.querySelectorAll(this.visibleResultsQuerySelector)).map(element => ({
         container: this.findContainer(element, containers),
@@ -90,6 +95,7 @@ var shortcuts = {
         focusElement: element
       }))
     ].filter(target => target.container !== null && this.isElementVisible(target.focusElement));
+    return ret;
   },
 
   hasModifierKey: function(e) {
