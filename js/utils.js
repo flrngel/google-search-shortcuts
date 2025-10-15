@@ -42,25 +42,9 @@ var shortcuts = {
   // a new patch update is out. We may also want to investigate a different
   // approach, that e.g. does not only rely on a query selector, but includes
   // additional heuristics, to improve the resiliency.
-  visibleResultsQuerySelector:
-    // Select all links in the main search results container, including
-    // non-search-result noise, like web cache, feedback, and further UI.
-    '#search a' +
-    // This selection is further refined with these filters:
-    // All actual search results have a `data-ved` attribute, but not all links
-    // with that attribute are search results.
-    '[data-ved]' +
-    // Some of them are interactive UI elements, like web cache, feedback, etc.
-    // They can be identified by the lack of a real target `href`.
-    ':not([href="#"])' +
-    // Google started inlining related questions and their search results as an
-    // accordion-type UI in an optional "People also ask" section. All accordion
-    // items are collapsed by default and marked as `aria-hidden` in that state.
-    // This filter excludes links that are invisible, as they are nested in a
-    // hidden ancestor element.
-    ':not([aria-hidden="true"] a)',
+  visibleResultsQuerySelector: 'a:has(> h3)[data-ved]:not([href="#"]), #search h3 > a[data-ved]:not([href="#"])',
 
-  resultContainerQuerySelector: 'div.gs_r, div.g, li, td, div [jscontroller]',
+  resultContainerQuerySelector: 'div.gs_r, div.g, li, td, div [jscontroller], div [data-hveid]',
   navigationContainerQuerySelector: 'div[role="navigation"] table',
   navigationLinksAndSuggestedSearchesQuerySelector: 'div[role="navigation"] table a, #botstuff a',
 
