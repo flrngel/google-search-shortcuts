@@ -42,7 +42,7 @@ var shortcuts = {
   // a new patch update is out. We may also want to investigate a different
   // approach, that e.g. does not only rely on a query selector, but includes
   // additional heuristics, to improve the resiliency.
-  visibleResultsQuerySelector: 'a:has(> h3)[data-ved]:not([href="#"]), #search h3 > a[data-ved]:not([href="#"])',
+  visibleResultsQuerySelector: 'a[data-ved]:not([href="#"]):not(div[role="listitem"] a), #search h3 > a[data-ved]:not([href="#"])',
 
   resultContainerQuerySelector: 'div.gs_r, div.g, li, td, div [jscontroller], div [data-hveid]',
   navigationContainerQuerySelector: 'div[role="navigation"] table',

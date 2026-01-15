@@ -23,12 +23,13 @@ body.useFancyHighlight .activeSearchResultContainer img {
   border-top: 3px solid #2586fc !important;
 }
 
-body.useSimpleHighlight .activeSearchResult:before {
-  content: '\25BA \00A0';
+body.useSimpleHighlight .activeSearchResultContainer {
+  border-left: 5px solid #1a73e8;
+  padding-left: 10px;
+  background-color: rgba(26, 115, 232, 0.05);
 }
 
 body.useSimpleHighlight .activeSearchResult {
-  white-space: nowrap;
   outline: 0;
 }
 
