@@ -42,7 +42,7 @@ var shortcuts = {
   // a new patch update is out. We may also want to investigate a different
   // approach, that e.g. does not only rely on a query selector, but includes
   // additional heuristics, to improve the resiliency.
-  visibleResultsQuerySelector: 'a[data-ved]:not([href="#"]):not(div[role="listitem"] a), #search h3 > a[data-ved]:not([href="#"])',
+  visibleResultsQuerySelector: '#search a[data-ved]:not([href="#"]):not(div[role="listitem"] a)',
 
   resultContainerQuerySelector: 'div.gs_r, div.g, li, td, div [jscontroller], div [data-hveid]',
   navigationContainerQuerySelector: 'div[role="navigation"] table',
@@ -68,11 +68,16 @@ var shortcuts = {
   getVisibleResults: function() {
     var containers = [];
     let ret = [
-      // Main items
-      ...Array.from(document.querySelectorAll(this.visibleResultsQuerySelector)).map(element => ({
-        container: this.findContainer(element, containers),
-        focusElement: element
-      })),
+      // Main items (constrained to #search to exclude top-of-page accessibility links such as
+      // "Skip to main content", "Accessibility help", "Accessibility feedback").
+      // The selector already scopes to #search; the closest() guard is an extra safety net in
+      // case the selector is customised or Google restructures the DOM.
+      ...Array.from(document.querySelectorAll(this.visibleResultsQuerySelector))
+        .filter(element => element.closest('#search') !== null)
+        .map(element => ({
+          container: this.findContainer(element, containers),
+          focusElement: element
+        })),
       // Suggested searches in footer and footer links
       ...Array.from(document.querySelectorAll(this.navigationLinksAndSuggestedSearchesQuerySelector)).map(element => ({
         container: element,
